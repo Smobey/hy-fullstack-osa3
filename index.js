@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 let persons = [
     {
@@ -24,6 +25,8 @@ let persons = [
     }
 ]
 
+app.use(bodyParser.json())
+
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!!</h1>')
 })
@@ -38,13 +41,32 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id )
+    const person = persons.find(person => person.id === id)
 
     if (person) {
         res.json(person)
     } else {
         res.status(404).end()
     }
+})
+
+app.post('/api/persons', (req, res) => {
+    const person = req.body
+    const name = person.name
+    const randId = Math.floor(Math.random() * Math.floor(99999))
+
+    if (!person.name || !person.number) {
+        return res.status(400).json({error: 'content missing'})
+    }
+
+    if (persons.find(person => person.name === name)) {
+        return res.status(400).json({error: 'name must be unique'})
+    }
+
+    person.id = randId
+    
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
