@@ -25,7 +25,11 @@ let persons = [
 ]
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
+    res.send('<h1>Hello World!!</h1>')
+})
+
+app.get('/info', (req, res) => {
+    res.send('<p>puhelinluettelossa ' + persons.length + ' henkilön tiedot</p> <p>' + new Date() + '</p>' )
 })
   
 app.get('/api/persons', (req, res) => {
@@ -43,8 +47,11 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-app.get('/info', (req, res) => {
-    res.send('<p>puhelinluettelossa ' + persons.length + ' henkilön tiedot</p> <p>' + new Date() + '</p>' )
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    persons = persons.filter(person => person.id !== id)
+  
+    res.status(204).end()
 })
 
 const port = 3001
