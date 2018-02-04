@@ -64,7 +64,6 @@ app.post('/api/persons', (req, res) => {
     }
 
     person.id = randId
-    
     persons = persons.concat(person)
     res.json(person)
 })
