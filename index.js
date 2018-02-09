@@ -3,10 +3,12 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const static = require('static')
 
 app.use(bodyParser.json())
 app.use(morgan(':method :url :req-body :status :res[content-length] - :response-time ms'))
 app.use(cors())
+app.use(express.static('build'))
 
 morgan.token('req-body', function getPoop(req) {
     return JSON.stringify(req.body);
