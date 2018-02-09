@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 const static = require('static')
-const mongoose = require('mongoose')
+const Person = require('./models/person')
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -14,14 +14,6 @@ app.use(morgan(':method :url :req-body :status :res[content-length] - :response-
 morgan.token('req-body', function getPoop(req) {
     return JSON.stringify(req.body);
 });
-
-const mongoose_url = 'mongodb://smobey:x@ds229438.mlab.com:29438/puhelinluettelo-db'
-mongoose.connect(mongoose_url)
-
-const Person = mongoose.model('Person', {
-    name: String,
-    number: String,
-})
 
 const formatPerson = (person) => {
     return {
@@ -49,7 +41,7 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id) 
+    const person = persons.find(person => person.id === id)
 
     if (person) {
         res.json(person)
