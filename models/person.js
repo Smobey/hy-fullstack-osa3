@@ -1,7 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
-const mongoose_url = 'mongodb://smobey:@ds229438.mlab.com:29438/puhelinluettelo-db'
+if ( process.env.NODE_ENV !== 'production' ) {
+    require('dotenv').config()
+}
+const mongoose_url = process.env.MONGODB_URI
+
+
 
 mongoose.connect(mongoose_url)
 
