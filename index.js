@@ -49,7 +49,7 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
+    const person = persons.find(person => person.id === id) 
 
     if (person) {
         res.json(person)
