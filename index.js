@@ -15,14 +15,6 @@ morgan.token('req-body', function getPoop(req) {
     return JSON.stringify(req.body);
 });
 
-const formatPerson = (person) => {
-    return {
-      name: person.name,
-      number: person.number,
-      id: person._id
-    }
-}
-
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!!</h1>')
 })
@@ -51,21 +43,22 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-    const person = req.body
-    const name = person.name
-    const randId = Math.floor(Math.random() * Math.floor(99999))
+    const body = req.body
 
-    if (!person.name || !person.number) {
+    if (!body.name || !body.number) {
         return res.status(400).json({error: 'content missing'})
     }
 
-    if (persons.find(person => person.name === name)) {
-        return res.status(400).json({error: 'name must be unique'})
-    }
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
 
-    person.id = randId
-    persons = persons.concat(person)
-    res.json(person)
+    person
+    .save()
+    .then(savedPerson => {
+        res.json(Person.format(savedPerson))
+    })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
