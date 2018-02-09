@@ -65,6 +65,18 @@ app.post('/api/persons', (req, res) => {
     })
 })
 
+app.put('/api/persons/:id', (req, res) => {
+    console.log(req.body.number)
+    Person
+    .findByIdAndUpdate(req.params.id, { number: req.body.number })
+    .then(result => {
+        res.status(204).end()
+    })
+    .catch(error => {
+        res.status(400).send({ error: 'malformatted id' })
+    })
+})
+
 app.delete('/api/persons/:id', (req, res) => {
     Person
     .findByIdAndRemove(req.params.id)

@@ -43,10 +43,12 @@ class App extends React.Component {
           this.displayNotification("Henkilö lisätty")
         })
     } else {
+      console.log("duplicate found")
       const dupe = this.state.persons.map(person => person).find((p) => p.name === person.name)
       personService
         .update(dupe.id, person)
         .then(response => {
+          console.log("response: ", response)
           personService
             .getAll()
             .then(response => {
