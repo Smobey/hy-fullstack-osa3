@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
-const mongoose_url = 'mongodb://smobey:@ds229438.mlab.com:29438/puhelinluettelo-db'
+const mongoose_url = 'mongodb://smobey:a@ds229438.mlab.com:29438/puhelinluettelo-db'
 
 mongoose.connect(mongoose_url)
 
