@@ -21,7 +21,7 @@ const formatPerson = (person) => {
       number: person.number,
       id: person._id
     }
-  }
+}
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!!</h1>')
@@ -35,7 +35,7 @@ app.get('/api/persons', (req, res) => {
     Person
     .find({})
     .then(persons => {
-        res.json(persons.map(formatPerson))
+        res.json(persons.map(Person.format))
     })
 })
 
