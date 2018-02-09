@@ -4,7 +4,12 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :req-body :status :res[content-length] - :response-time ms'))
+
+morgan.token('req-body', function getPoop(req) {
+    return JSON.stringify(req.body);
+});
+
 let persons = [
     {
         name: "Martti Tienari",
