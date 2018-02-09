@@ -1,9 +1,6 @@
 import axios from 'axios'
 
-if ( process.env.NODE_ENV !== 'production' ) {
-  require('dotenv').config()
-}
-const baseUrl = process.env.BASE_URL
+const baseUrl = '/api/persons'
 
 const getAll = () => {
   return axios.get(baseUrl)
