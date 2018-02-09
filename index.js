@@ -15,10 +15,6 @@ morgan.token('req-body', function getPoop(req) {
     return JSON.stringify(req.body);
 });
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!!</h1>')
-})
-
 app.get('/info', (req, res) => {
     Person
     .find({})
