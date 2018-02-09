@@ -4,38 +4,32 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 const static = require('static')
+const mongoose = require('mongoose')
 
 app.use(bodyParser.json())
-app.use(morgan(':method :url :req-body :status :res[content-length] - :response-time ms'))
 app.use(cors())
 app.use(express.static('build'))
 
+app.use(morgan(':method :url :req-body :status :res[content-length] - :response-time ms'))
 morgan.token('req-body', function getPoop(req) {
     return JSON.stringify(req.body);
 });
 
-let persons = [
-    {
-        name: "Martti Tienari",
-        number: "040-123456",
-        id: 2
-    },
-    {
-        name: "Lea Kutvonen",
-        number: "040-123456",
-        id: 4
-    },
-    {
-        name: "Arto Hellas",
-        number: "040-123456",
-        id: 5
-    },
-    {
-        name: "asdasd",
-        number: "5",
-        id: 6
+const mongoose_url = 'mongodb://smobey:x@ds229438.mlab.com:29438/puhelinluettelo-db'
+mongoose.connect(mongoose_url)
+
+const Person = mongoose.model('Person', {
+    name: String,
+    number: String,
+})
+
+const formatPerson = (person) => {
+    return {
+      name: person.name,
+      number: person.number,
+      id: person._id
     }
-]
+  }
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!!</h1>')
@@ -46,7 +40,11 @@ app.get('/info', (req, res) => {
 })
   
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person
+    .find({})
+    .then(persons => {
+        res.json(persons.map(formatPerson))
+    })
 })
 
 app.get('/api/persons/:id', (req, res) => {
