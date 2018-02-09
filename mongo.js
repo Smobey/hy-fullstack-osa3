@@ -5,8 +5,14 @@ const url = 'mongodb://smobey:(pass)@ds229438.mlab.com:29438/puhelinluettelo-db'
 mongoose.connect(url)
 
 const Person = mongoose.model('Person', {
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        required: true
+    },
+    number: {
+        type: String,
+        required: true
+    }
 })
 
 if (process.argv.length < 3) {

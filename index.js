@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-
     Person
     .find({})
     .then(persons => {
@@ -58,20 +57,27 @@ app.post('/api/persons', (req, res) => {
         return res.status(400).json({error: 'content missing'})
     }
 
-    const person = new Person({
-        name: body.name,
-        number: body.number
-    })
-
-    person
-    .save()
-    .then(savedPerson => {
-        res.json(Person.format(savedPerson))
+    Person
+    .findOne({ name: body.name })
+    .then(person => {
+        if (person) {
+            res.status(400).send({ error: 'duplicate name' })
+        } else {
+            const person = new Person({
+                name: body.name,
+                number: body.number
+            })
+        
+            person
+            .save()
+            .then(savedPerson => {
+                res.json(Person.format(savedPerson))
+            })
+        }
     })
 })
 
 app.put('/api/persons/:id', (req, res) => {
-    console.log(req.body.number)
     Person
     .findByIdAndUpdate(req.params.id, { number: req.body.number })
     .then(result => {
